@@ -10,6 +10,29 @@ DigitalIn  btnGauche(PF_10); // Initialisation des 4 boutons
 DigitalIn  btnDroite(PF_8);
 DigitalIn  btnHaut(PA_8);
 DigitalIn  btnBas(PB_14);
+/*
+// Déclare les 3 images pour l'animation de la voiture 
+    LV_IMG_DECLARE(animvoiture1)
+    LV_IMG_DECLARE(animvoiture2)
+    LV_IMG_DECLARE(animvoiture3)
+    
+// Met les 3 images dans un tableau pour pouvoir les utilsier de façon plus dynamique
+static const lv_img_dsc_t * anim_imgs[3] = {
+    &animvoiture1,
+    &animvoiture2,
+    &animvoiture3,
+    };
+// Fonction pour l'animation de la voiture 
+void lv_anim_voiture(void)
+{
+    lv_obj_t * animvoit = lv_animimg_create(lv_scr_act());
+    lv_obj_center(animvoit);
+    //lv_animimg_set_src(animvoit, (const void **) anim_imgs, 3);
+    lv_animimg_set_duration(animvoit, 500);
+    lv_animimg_set_repeat_count(animvoit, LV_ANIM_REPEAT_INFINITE);
+    lv_animimg_start(animvoit);
+}
+*/
 
 int main() {
     threadLvgl.lock();
@@ -20,8 +43,7 @@ int main() {
     static lv_point_t line_points[] = {{0,0}, {490, 0}}; // Coordonnées des 2 points pour faire une grande ligne
     static lv_point_t line_points_small[] = {{0,0}, {95, 0}}; // Coordonnées des 2 points pour faire une petite ligne
     static lv_style_t style_line;
-    int avance_ligne = 200;
-    int avance_ligne2 = 290;
+    int pos_x_ligne1 = 200;
     lv_style_init(&style_line);
     lv_style_set_line_width(&style_line, 8);
     lv_style_set_line_color(&style_line, lv_palette_main(LV_PALETTE_BLUE_GREY));
@@ -47,11 +69,11 @@ int main() {
     lv_obj_add_style(line3, &style_line, 0);
     lv_obj_align(line3, LV_ALIGN_BOTTOM_MID, 0,-20);
 
-    /*Crée la ligne4 au milieu l'écran et applique le style*/
-    lv_obj_t * line4;
-    line4 = lv_line_create(lv_scr_act());
-    lv_line_set_points(line4, line_points_small, 2);  // Nombres de points pour la ligne
-    lv_obj_add_style(line4, &style_line, 0);
+    LV_IMG_DECLARE(car);
+    lv_obj_t * imgcar = lv_img_create(lv_scr_act());
+    lv_img_set_src(imgcar, &car);
+    lv_obj_align(imgcar, LV_ALIGN_CENTER, 0, -20);
+    lv_obj_set_size(imgcar, 80, 70);
 
     threadLvgl.unlock();
 
@@ -60,25 +82,20 @@ int main() {
         ThisThread::sleep_for(10ms);
         
         threadLvgl.lock();
+        //lv_anim_voiture();
 
-        lv_obj_align(line2, LV_ALIGN_CENTER, avance_ligne,10);
-        avance_ligne = avance_ligne - 6;
-        lv_obj_align(line4, LV_ALIGN_CENTER, avance_ligne2,10);
-        avance_ligne2 = avance_ligne2 - 6;
-
-
-        if (avance_ligne < -210)
+        if (pos_x_ligne1 < -290)
         {
-            avance_ligne2 = 290;
-            lv_obj_align(line4, LV_ALIGN_CENTER, avance_ligne2,10);
+            pos_x_ligne1 = 290;
+            lv_obj_align(line2, LV_ALIGN_CENTER, pos_x_ligne1,10);
         }
 
-        if (avance_ligne < -290)
+        else
         {
-            avance_ligne = 290;
-            lv_obj_align(line2, LV_ALIGN_CENTER, avance_ligne,10);
+            lv_obj_align(line2, LV_ALIGN_CENTER, pos_x_ligne1,10);
+            pos_x_ligne1 = pos_x_ligne1 - 8;
         }
-
+        
         threadLvgl.unlock();
     }
 }
