@@ -37,11 +37,13 @@ int main() {
     threadLvgl.lock();
     
     lv_obj_clear_flag(lv_scr_act(), LV_OBJ_FLAG_SCROLLABLE); // Désactive la scrollbar et empêche l'utilisateur de scrollé
-    
+
     /*Style de la ligne*/
     lv_point_t line_points_taille1[] = {{0,0}, {0, 10}}; // Ligne qui voit sa largeur s'incrémenter le static a été enlevé pour modifier la valeur
     static lv_style_t style_line;
     int pos_x_ligne = 8;  // Position de la ligne a son apparition sur l'écran
+    int pos_x_arbre = 220;  // Position de l'arbre a son apparition sur l'écran
+    int largeur_arbre = 80; // Largeur de l'arbre au début 
     lv_style_init(&style_line);
     lv_style_set_line_width(&style_line, 3);
     lv_style_set_line_color(&style_line, lv_palette_main(LV_PALETTE_AMBER));
@@ -64,10 +66,19 @@ int main() {
     LV_IMG_DECLARE(car);
     lv_obj_t * imgcar = lv_img_create(lv_scr_act());
     lv_img_set_src(imgcar, &car);
-    lv_img_set_zoom(imgcar, 128);
+    lv_img_set_zoom(imgcar, 96);
     lv_img_set_angle(imgcar, 900);
     lv_obj_align(imgcar, LV_ALIGN_CENTER, -150, 0);
     lv_obj_set_size(imgcar, 210, 124);
+
+    /*Met en place l'image de l'arbre sur l'écran*/
+    LV_IMG_DECLARE(palm_tree);
+    lv_obj_t * imgtree = lv_img_create(lv_scr_act());
+    lv_img_set_src(imgtree, &palm_tree);
+    lv_img_set_zoom(imgtree, largeur_arbre);
+    lv_img_set_angle(imgtree, 900);
+    lv_obj_align(imgtree, LV_ALIGN_OUT_LEFT_MID, pos_x_arbre, 130);
+    lv_obj_set_size(imgtree, 134, 207);
 
     threadLvgl.unlock();
 
@@ -77,30 +88,47 @@ int main() {
         
         threadLvgl.lock();
 
-        lv_obj_align(line, LV_ALIGN_CENTER, pos_x_ligne,10);  // Pour que la ligne bouge 
+        lv_obj_align(line, LV_ALIGN_CENTER, pos_x_ligne,0);  // Pour que la ligne bouge 
+        lv_obj_align(imgtree, LV_ALIGN_OUT_LEFT_MID, pos_x_arbre, 130);
         pos_x_ligne = pos_x_ligne -10;  // On fait reculer la ligne de 10
-        line_points_taille1[1].y += 10;  // La largeur de la ligne augmente de 10
-        ThisThread::sleep_for(60ms);  // Pour aller plus vite 
+        pos_x_arbre = pos_x_arbre -10;  // On fait reculer la ligne de 10
+        line_points_taille1[1].y += 10;  // La largeur de la ligne augmente de 
+        largeur_arbre += 10;  // La largeur de l'arbre augmente de 10
+        lv_img_set_zoom(imgtree, largeur_arbre);
+        ThisThread::sleep_for(55ms);  // Pour aller plus vite 
         
         if (pos_x_ligne <= -90)
         {
-            lv_obj_align(line, LV_ALIGN_CENTER, pos_x_ligne,10);  // Pour que la ligne bouge 
+            lv_obj_align(line, LV_ALIGN_CENTER, pos_x_ligne,0);  // Pour que la ligne bouge 
+            lv_obj_align(imgtree, LV_ALIGN_OUT_LEFT_MID, pos_x_arbre, 130);
+            pos_x_arbre = pos_x_arbre -10;  // On fait reculer la ligne de 10
             pos_x_ligne = pos_x_ligne -10;  // On fait reculer la ligne de 10
             line_points_taille1[1].y += 10;  // La largeur de la ligne augmente de 10
+            largeur_arbre += 10;  // La largeur de l'arbre augmente de 10
+            lv_img_set_zoom(imgtree, largeur_arbre);
         }
 
         if (pos_x_ligne <= -190)
         {
-            lv_obj_align(line, LV_ALIGN_CENTER, pos_x_ligne,10);  // Pour que la ligne bouge 
+            lv_obj_align(line, LV_ALIGN_CENTER, pos_x_ligne,0);  // Pour que la ligne bouge 
+            lv_obj_align(imgtree, LV_ALIGN_OUT_LEFT_MID, pos_x_arbre, 130);
+            pos_x_arbre = pos_x_arbre -10;  // On fait reculer la ligne de 10
             pos_x_ligne = pos_x_ligne -10;  // On fait reculer la ligne de 10
             line_points_taille1[1].y += 10;  // La largeur de la ligne augmente de 10
+            largeur_arbre += 10;  // La largeur de l'arbre augmente de 10
+            lv_img_set_zoom(imgtree, largeur_arbre);
         } 
 
         if (pos_x_ligne <= -270)
         {
             pos_x_ligne = 8;
-            lv_obj_align(line, LV_ALIGN_CENTER, pos_x_ligne,10);  // Pour que la ligne bouge 
+            pos_x_arbre = 220;
+            largeur_arbre = 80;  // La largeur de l'arbre est remise à sa valeur initiale
+            lv_obj_align(line, LV_ALIGN_CENTER, pos_x_ligne,0);  // Pour que la ligne bouge 
+            lv_obj_align(imgtree, LV_ALIGN_OUT_LEFT_MID, pos_x_arbre, 130);
             line_points_taille1[1].y = 10;  // La largeur de la ligne retourne à sa valeur initiale
+            largeur_arbre += 10;  // La largeur de l'arbre augmente de 10
+            lv_img_set_zoom(imgtree, largeur_arbre);
         }
         
         threadLvgl.unlock();
