@@ -1,12 +1,11 @@
 #include <mbed.h>
 #include <threadLvgl.h>
-
 #include "demos/lv_demos.h"
 #include <cstdio>
 
 ThreadLvgl threadLvgl(30);
 
-DigitalIn  btnGauche(PF_10); // Initialisation des 4 boutons 
+DigitalIn  btnGauche(PF_10); // Initialisation des 4 boutons du joystick
 DigitalIn  btnDroite(PF_8);
 DigitalIn  btnHaut(PA_8);
 DigitalIn  btnBas(PB_14);
@@ -38,16 +37,14 @@ int main() {
     threadLvgl.lock();
     
     lv_obj_clear_flag(lv_scr_act(), LV_OBJ_FLAG_SCROLLABLE); // Désactive la scrollbar et empêche l'utilisateur de scrollé
+    
     /*Style de la ligne*/
-    //static lv_point_t line_points[] = {{0,0}, {490, 0}}; // Coordonnées des 2 points pour faire une grande ligne
-    static lv_point_t line_points_small[] = {{0,0}, {0, 273}}; // Coordonnées des 2 points pour faire une petite ligne
-    static lv_point_t line_points_small2[] = {{0,0}, {0, 185}}; // Coordonnées des 2 points pour faire une petite ligne
+    lv_point_t line_points_taille1[] = {{0,0}, {0, 10}}; // Ligne qui voit sa largeur s'incrémenter le static a été enlevé pour modifier la valeur
     static lv_style_t style_line;
-    int pos_x_ligne = -100;
-    int pos_x_ligne2 = 0;
+    int pos_x_ligne = 8;  // Position de la ligne a son apparition sur l'écran
     lv_style_init(&style_line);
     lv_style_set_line_width(&style_line, 3);
-    lv_style_set_line_color(&style_line, lv_palette_main(LV_PALETTE_PURPLE));
+    lv_style_set_line_color(&style_line, lv_palette_main(LV_PALETTE_AMBER));
 
     /*Met en place l'image en fond d'écran*/
     LV_IMG_DECLARE(fond);
@@ -57,42 +54,11 @@ int main() {
     lv_obj_align(imgfond,LV_ALIGN_CENTER,0,0);
     lv_disp_set_bg_image(NULL, &fond);
 
-    // lv_disp_set_bg_color(NULL, lv_palette_main(LV_PALETTE_DEEP_PURPLE)); // marche pas
-    //lv_style_set_line_rounded(&style_line, false); // Donner un style arrondi à la ligne
-    
-    //Crée la ligne1 en haut de l'écran et applique le style
-    /*
-    lv_obj_t * line1;
-    line1 = lv_line_create(lv_scr_act());
-    lv_line_set_points(line1, line_points, 2);  // Nombres de points pour la ligne
-    lv_obj_add_style(line1, &style_line, 0);
-    lv_obj_align(line1, LV_ALIGN_TOP_MID, 0,30);
-
-    //Crée la ligne2 au milieu l'écran et applique le style
-    lv_obj_t * line2;
-    line2 = lv_line_create(lv_scr_act());
-    lv_line_set_points(line2, line_points_small, 2);  // Nombres de points pour la ligne
-    lv_obj_add_style(line2, &style_line, 0);
-
-    //Crée la ligne3 en bas de l'écran et applique le style
-    lv_obj_t * line3;
-    line3 = lv_line_create(lv_scr_act());
-    lv_line_set_points(line3, line_points, 2);  // Nombres de points pour la ligne
-    lv_obj_add_style(line3, &style_line, 0);
-    lv_obj_align(line3, LV_ALIGN_BOTTOM_MID, 0,-20);
-    */
-
     //Crée la ligne au milieu l'écran et applique le style
     lv_obj_t * line;
     line = lv_line_create(lv_scr_act());
-    lv_line_set_points(line, line_points_small, 2);  // Nombres de points pour la ligne
+    lv_line_set_points(line, line_points_taille1, 2);  // Nombres de points pour la ligne
     lv_obj_add_style(line, &style_line, 0);
-
-    //Crée la ligne2 au milieu l'écran et applique le style
-    lv_obj_t * line2;
-    line2 = lv_line_create(lv_scr_act());
-    lv_line_set_points(line2, line_points_small2, 2);  // Nombres de points pour la ligne
-    lv_obj_add_style(line2, &style_line, 0);
 
     /*Met en place l'image de la voiture sur l'écran*/
     LV_IMG_DECLARE(car);
@@ -110,39 +76,32 @@ int main() {
         ThisThread::sleep_for(10ms);
         
         threadLvgl.lock();
-        //lv_anim_voiture();
+
+        lv_obj_align(line, LV_ALIGN_CENTER, pos_x_ligne,10);  // Pour que la ligne bouge 
+        pos_x_ligne = pos_x_ligne -10;  // On fait reculer la ligne de 10
+        line_points_taille1[1].y += 10;  // La largeur de la ligne augmente de 10
+        ThisThread::sleep_for(60ms);  // Pour aller plus vite 
         
-        lv_obj_align(line, LV_ALIGN_CENTER, pos_x_ligne,10);
-        pos_x_ligne = pos_x_ligne -50;
-        ThisThread::sleep_for(200ms);
-
-        if (pos_x_ligne < -270)
+        if (pos_x_ligne <= -90)
         {
-            pos_x_ligne = -100;
-            lv_obj_align(line, LV_ALIGN_CENTER, pos_x_ligne,10);
+            lv_obj_align(line, LV_ALIGN_CENTER, pos_x_ligne,10);  // Pour que la ligne bouge 
+            pos_x_ligne = pos_x_ligne -10;  // On fait reculer la ligne de 10
+            line_points_taille1[1].y += 10;  // La largeur de la ligne augmente de 10
         }
 
-        lv_obj_align(line2, LV_ALIGN_CENTER, pos_x_ligne2,10);
-        pos_x_ligne2 = pos_x_ligne2 -20;
-
-        if (pos_x_ligne2 < -100)
+        if (pos_x_ligne <= -190)
         {
-            pos_x_ligne2 = 0;
-            lv_obj_align(line2, LV_ALIGN_CENTER, pos_x_ligne2,10);
+            lv_obj_align(line, LV_ALIGN_CENTER, pos_x_ligne,10);  // Pour que la ligne bouge 
+            pos_x_ligne = pos_x_ligne -10;  // On fait reculer la ligne de 10
+            line_points_taille1[1].y += 10;  // La largeur de la ligne augmente de 10
+        } 
+
+        if (pos_x_ligne <= -270)
+        {
+            pos_x_ligne = 8;
+            lv_obj_align(line, LV_ALIGN_CENTER, pos_x_ligne,10);  // Pour que la ligne bouge 
+            line_points_taille1[1].y = 10;  // La largeur de la ligne retourne à sa valeur initiale
         }
-
-        /*
-        if (pos_x_ligne1 < -290)
-        {
-            pos_x_ligne1 = 290;
-            lv_obj_align(line2, LV_ALIGN_CENTER, pos_x_ligne1,10);
-        }
-
-        else
-        {
-            lv_obj_align(line2, LV_ALIGN_CENTER, pos_x_ligne1,10);
-            pos_x_ligne1 = pos_x_ligne1 - 8;
-        }*/
         
         threadLvgl.unlock();
     }
