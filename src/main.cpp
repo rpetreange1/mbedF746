@@ -9,29 +9,30 @@ DigitalIn  btnGauche(PF_10); // Initialisation des 4 boutons du joystick
 DigitalIn  btnDroite(PF_8);
 DigitalIn  btnHaut(PA_8);
 DigitalIn  btnBas(PB_14);
-/*
+
 // Déclare les 3 images pour l'animation de la voiture 
-    LV_IMG_DECLARE(animvoiture1)
-    LV_IMG_DECLARE(animvoiture2)
-    LV_IMG_DECLARE(animvoiture3)
+    LV_IMG_DECLARE(voiture1)
+    LV_IMG_DECLARE(voiture2)
+    LV_IMG_DECLARE(voiture3)
     
-// Met les 3 images dans un tableau pour pouvoir les utilsier de façon plus dynamique
+// Met les 3 images dans un tableau pour pouvoir les utiliser de façon plus dynamique
 static const lv_img_dsc_t * anim_imgs[3] = {
-    &animvoiture1,
-    &animvoiture2,
-    &animvoiture3,
+    &voiture1,
+    &voiture2,
+    &voiture3,
     };
+
 // Fonction pour l'animation de la voiture 
 void lv_anim_voiture(void)
 {
     lv_obj_t * animvoit = lv_animimg_create(lv_scr_act());
     lv_obj_center(animvoit);
-    //lv_animimg_set_src(animvoit, (const void **) anim_imgs, 3);
+    lv_animimg_set_src(animvoit, (const void **) anim_imgs, 3);
+    lv_img_set_zoom(animvoit, 96);
     lv_animimg_set_duration(animvoit, 500);
     lv_animimg_set_repeat_count(animvoit, LV_ANIM_REPEAT_INFINITE);
     lv_animimg_start(animvoit);
 }
-*/
 
 int main() {
     threadLvgl.lock();
@@ -71,7 +72,7 @@ int main() {
     lv_obj_align(imgcar, LV_ALIGN_CENTER, -150, 0);
     lv_obj_set_size(imgcar, 210, 124);
 
-    /*Met en place l'image de l'arbre sur l'écran*/
+    /*Met en place l'image de l'arbre à droite sur l'écran*/
     LV_IMG_DECLARE(palm_tree);
     lv_obj_t * imgtree = lv_img_create(lv_scr_act());
     lv_img_set_src(imgtree, &palm_tree);
