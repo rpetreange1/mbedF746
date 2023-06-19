@@ -16,22 +16,23 @@ DigitalIn  btnHaut(PF_10); // Initialisation des 4 boutons du joystick
 DigitalIn  btnDroite(PF_8);
 DigitalIn  btnBas(PA_8);
 DigitalIn  btnGauche(PB_14);
-/*
+
 static void event_cb(lv_event_t * e)
     {
-        lv_obj_t * obj = lv_event_get_current_target(e);
+        lv_obj_t * obj = lv_event_get_target(e);
+        LV_UNUSED(obj);
         LV_LOG_USER("Button %s clicked", lv_msgbox_get_active_btn_text(obj));
     }
 
-    void msgbox_pause(void)
+void msgbox_start(void)
     {
         static const char * btns[] = {"Apply", "Close", ""};
 
-        lv_obj_t * mbox1 = lv_msgbox_create(NULL, "JE VEUX JOUER", btns, true);
+        lv_obj_t * mbox1 = lv_msgbox_create(NULL, "Hello", "nigga", btns, true);
         lv_obj_add_event_cb(mbox1, event_cb, LV_EVENT_VALUE_CHANGED, NULL);
         lv_obj_center(mbox1);
-    } */
-/*
+    } 
+
 // Déclare les 3 images pour l'animation de la voiture 
     LV_IMG_DECLARE(voiture1)
     LV_IMG_DECLARE(voiture2)
@@ -58,11 +59,15 @@ void lv_anim_voiture(void)
     lv_animimg_set_repeat_count(animvoit, LV_ANIM_REPEAT_INFINITE);
     lv_animimg_start(animvoit);
 }
-*/
+
 int main() {
     threadLvgl.lock();
     
     lv_obj_clear_flag(lv_scr_act(), LV_OBJ_FLAG_SCROLLABLE); // Désactive la scrollbar et empêche l'utilisateur de scrollé
+    
+    // Déclarer mbox1 ici sinon erreur
+    lv_obj_t * mbox1;
+    msgbox_start();
 
     /*Style de la ligne*/
     lv_point_t line_points_taille1[] = {{0,0}, {0, 10}}; // Ligne qui voit sa largeur s'incrémenter le static a été enlevé pour modifier la valeur
@@ -192,8 +197,7 @@ int main() {
             break;
 
             case Bas:
-            //msgbox_pause();
-
+            lv_msgbox_close(mbox1);
             Direction = 0;
             break;
 
