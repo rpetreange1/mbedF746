@@ -94,13 +94,14 @@ int main() {
         ThisThread::sleep_for(10ms);
         
         threadLvgl.lock();
+        /*Affiche le timer qui est le score*/
 
         lv_obj_align(line, LV_ALIGN_CENTER, pos_x_ligne,0);  // Pour que la ligne bouge 
         lv_obj_align(imgtree, LV_ALIGN_OUT_LEFT_MID, pos_x_arbre, 130);
-        lv_obj_align(imgobst, LV_ALIGN_CENTER, pos_x_obs,pos_X_voiture);
-        pos_x_ligne = pos_x_ligne -10;  // On fait reculer la ligne de 10
-        pos_x_arbre = pos_x_arbre -10;  // On fait reculer la ligne de 10
-        pos_x_obs = pos_x_obs -10;  // On fait reculer l'obstacle de 10
+        lv_obj_align(imgobst, LV_ALIGN_CENTER, pos_x_obs,pos_y_obs);
+        pos_x_ligne -= 10;  // On fait reculer la ligne de 10
+        pos_x_arbre -= 10;  // On fait reculer la ligne de 10
+        pos_x_obs -= 13;  // On fait reculer l'obstacle de 10
         line_points_taille1[1].y += 10;  // La largeur de la ligne augmente de 
         largeur_arbre += 10;  // La largeur de l'arbre augmente de 10
         lv_img_set_zoom(imgtree, largeur_arbre);
@@ -110,10 +111,10 @@ int main() {
         {
             lv_obj_align(line, LV_ALIGN_CENTER, pos_x_ligne,0);  // Pour que la ligne bouge 
             lv_obj_align(imgtree, LV_ALIGN_OUT_LEFT_MID, pos_x_arbre, 130);
-            lv_obj_align(imgobst, LV_ALIGN_CENTER, pos_x_obs,pos_X_voiture-2);
-            pos_x_arbre = pos_x_arbre -10;  // On fait reculer la ligne de 10
-            pos_x_ligne = pos_x_ligne -10;  // On fait reculer la ligne de 10
-            pos_x_obs = pos_x_obs -10;  // On fait reculer l'obstacle de 10
+            lv_obj_align(imgobst, LV_ALIGN_CENTER, pos_x_obs,pos_y_obs);
+            pos_x_arbre -= 10;  // On fait reculer la ligne de 10
+            pos_x_ligne -= 10;  // On fait reculer la ligne de 10
+            pos_x_obs -= 13;  // On fait reculer l'obstacle de 10
             line_points_taille1[1].y += 10;  // La largeur de la ligne augmente de 10
             largeur_arbre += 10;  // La largeur de l'arbre augmente de 10
             lv_img_set_zoom(imgtree, largeur_arbre);
@@ -123,10 +124,10 @@ int main() {
         {
             lv_obj_align(line, LV_ALIGN_CENTER, pos_x_ligne,0);  // Pour que la ligne bouge 
             lv_obj_align(imgtree, LV_ALIGN_OUT_LEFT_MID, pos_x_arbre, 130);
-            lv_obj_align(imgobst, LV_ALIGN_CENTER, pos_x_obs,pos_X_voiture-3);
-            pos_x_arbre = pos_x_arbre -10;  // On fait reculer l'arbre de 10
-            pos_x_ligne = pos_x_ligne -10;  // On fait reculer la ligne de 10
-            pos_x_obs = pos_x_obs -10;  // On fait reculer l'obstacle de 10
+            lv_obj_align(imgobst, LV_ALIGN_CENTER, pos_x_obs,pos_y_obs);
+            pos_x_arbre -= 10;  // On fait reculer l'arbre de 10
+            pos_x_ligne -= 10;  // On fait reculer la ligne de 10
+            pos_x_obs -= 13;  // On fait reculer l'obstacle de 10
             line_points_taille1[1].y += 10;  // La largeur de la ligne augmente de 10
             largeur_arbre += 10;  // La largeur de l'arbre augmente de 10
             lv_img_set_zoom(imgtree, largeur_arbre);
@@ -138,9 +139,10 @@ int main() {
             pos_x_arbre = 220;
             pos_x_obs = 0;
             largeur_arbre = 80;  // La largeur de l'arbre est remise à sa valeur initiale
+            pos_y_obs = pos_X_voiture;  // Le drapeau se place dans l'axe de la voiture 
             lv_obj_align(line, LV_ALIGN_CENTER, pos_x_ligne,0);  // Pour que la ligne bouge 
             lv_obj_align(imgtree, LV_ALIGN_OUT_LEFT_MID, pos_x_arbre, 130);
-            lv_obj_align(imgobst, LV_ALIGN_CENTER, pos_x_obs,pos_X_voiture-5);
+            lv_obj_align(imgobst, LV_ALIGN_CENTER, pos_x_obs,pos_y_obs);
             line_points_taille1[1].y = 10;  // La largeur de la ligne retourne à sa valeur initiale
             largeur_arbre += 10;  // La largeur de l'arbre augmente de 10
             lv_img_set_zoom(imgtree, largeur_arbre);
@@ -162,7 +164,6 @@ int main() {
             case Droite:
             pos_X_voiture += 11;
             lv_obj_align(imgcar, LV_ALIGN_CENTER, -150, pos_X_voiture);
-            
             if(pos_X_voiture >= 60)
                 {
                     pos_X_voiture = 60;
@@ -171,8 +172,8 @@ int main() {
             break;
 
             case Haut:
-            pos_x_arbre = pos_x_arbre -14;  // On fait reculer l'arbre de 10
-            pos_x_ligne = pos_x_ligne -14;  // On fait reculer la ligne de 10
+            pos_x_arbre -= 14;  // On fait reculer l'arbre de 10
+            pos_x_ligne -= 14;  // On fait reculer la ligne de 10
             line_points_taille1[1].y += 10;  // La largeur de la ligne retourne à sa valeur initiale
             largeur_arbre += 10;  // La largeur de l'arbre augmente de 10
             Direction = 0;
@@ -192,8 +193,8 @@ int main() {
                 {
                     pos_X_voiture = -85;
                 }
-            pos_x_arbre = pos_x_arbre -14;  // On fait reculer l'arbre de 10
-            pos_x_ligne = pos_x_ligne -14;  // On fait reculer la ligne de 10
+            pos_x_arbre -= 14;  // On fait reculer l'arbre de 10
+            pos_x_ligne -= 14;  // On fait reculer la ligne de 10
             line_points_taille1[1].y += 10;  // La largeur de la ligne retourne à sa valeur initiale
             largeur_arbre += 10;  // La largeur de l'arbre augmente de 10
             Direction = 0;
@@ -207,8 +208,8 @@ int main() {
                 {
                     pos_X_voiture = 60;
                 }
-            pos_x_arbre = pos_x_arbre -14;  // On fait reculer l'arbre de 10
-            pos_x_ligne = pos_x_ligne -14;  // On fait reculer la ligne de 10
+            pos_x_arbre -= 14;  // On fait reculer l'arbre de 10
+            pos_x_ligne -= 14;  // On fait reculer la ligne de 10
             line_points_taille1[1].y += 10;  // La largeur de la ligne retourne à sa valeur initiale
             largeur_arbre += 10;  // La largeur de l'arbre augmente de 10
             Direction = 0;
