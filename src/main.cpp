@@ -32,9 +32,9 @@ int main() {
     int pos_x_obs = 0;
     int pos_y_obs = 0;
     int Direction = 0;
-    lv_style_init(&style_line);
-    lv_style_set_line_width(&style_line, 3);
-    lv_style_set_line_color(&style_line, lv_palette_main(LV_PALETTE_AMBER));  
+    lv_style_init(&style_line); // Création de la ligne
+    lv_style_set_line_width(&style_line, 3); // Paramètre pour le style de la ligne
+    lv_style_set_line_color(&style_line, lv_palette_main(LV_PALETTE_AMBER)); // Paramètre pour le style de la ligne  
 
     /*Met en place l'image en fond d'écran*/
     LV_IMG_DECLARE(fond);
@@ -97,8 +97,8 @@ int main() {
         /*Affiche le timer qui est le score*/
 
         lv_obj_align(line, LV_ALIGN_CENTER, pos_x_ligne,0);  // Pour que la ligne bouge 
-        lv_obj_align(imgtree, LV_ALIGN_OUT_LEFT_MID, pos_x_arbre, 130);
-        lv_obj_align(imgobst, LV_ALIGN_CENTER, pos_x_obs,pos_y_obs);
+        lv_obj_align(imgtree, LV_ALIGN_OUT_LEFT_MID, pos_x_arbre, 130); // Pour que le palmier bouge 
+        lv_obj_align(imgobst, LV_ALIGN_CENTER, pos_x_obs,pos_y_obs); // Pour que l'obstacle bouge 
         pos_x_ligne -= 10;  // On fait reculer la ligne de 10
         pos_x_arbre -= 10;  // On fait reculer la ligne de 10
         pos_x_obs -= 13;  // On fait reculer l'obstacle de 10
@@ -110,8 +110,8 @@ int main() {
         if (pos_x_ligne <= -90)
         {
             lv_obj_align(line, LV_ALIGN_CENTER, pos_x_ligne,0);  // Pour que la ligne bouge 
-            lv_obj_align(imgtree, LV_ALIGN_OUT_LEFT_MID, pos_x_arbre, 130);
-            lv_obj_align(imgobst, LV_ALIGN_CENTER, pos_x_obs,pos_y_obs);
+            lv_obj_align(imgtree, LV_ALIGN_OUT_LEFT_MID, pos_x_arbre, 130); // Pour que le palmier bouge 
+            lv_obj_align(imgobst, LV_ALIGN_CENTER, pos_x_obs,pos_y_obs); // Pour que l'obstacle bouge 
             pos_x_arbre -= 10;  // On fait reculer la ligne de 10
             pos_x_ligne -= 10;  // On fait reculer la ligne de 10
             pos_x_obs -= 13;  // On fait reculer l'obstacle de 10
@@ -123,21 +123,21 @@ int main() {
         if (pos_x_ligne <= -190)
         {
             lv_obj_align(line, LV_ALIGN_CENTER, pos_x_ligne,0);  // Pour que la ligne bouge 
-            lv_obj_align(imgtree, LV_ALIGN_OUT_LEFT_MID, pos_x_arbre, 130);
-            lv_obj_align(imgobst, LV_ALIGN_CENTER, pos_x_obs,pos_y_obs);
+            lv_obj_align(imgtree, LV_ALIGN_OUT_LEFT_MID, pos_x_arbre, 130); // Pour que le palmier bouge 
+            lv_obj_align(imgobst, LV_ALIGN_CENTER, pos_x_obs,pos_y_obs); // Pour que l'obstacle bouge 
             pos_x_arbre -= 10;  // On fait reculer l'arbre de 10
             pos_x_ligne -= 10;  // On fait reculer la ligne de 10
             pos_x_obs -= 13;  // On fait reculer l'obstacle de 10
             line_points_taille1[1].y += 10;  // La largeur de la ligne augmente de 10
             largeur_arbre += 10;  // La largeur de l'arbre augmente de 10
-            lv_img_set_zoom(imgtree, largeur_arbre);
+            lv_img_set_zoom(imgtree, largeur_arbre); // Agrandit le palmier pour la perspective
         } 
 
         if (pos_x_ligne <= -270)
         {
-            pos_x_ligne = 8;
-            pos_x_arbre = 220;
-            pos_x_obs = 0;
+            pos_x_ligne = 8;  // On reset leur positions de base quand on arrive au bout de l'écran
+            pos_x_arbre = 220; // Pareil
+            pos_x_obs = 0; // Pareil 
             largeur_arbre = 80;  // La largeur de l'arbre est remise à sa valeur initiale
             pos_y_obs = pos_X_voiture;  // Le drapeau se place dans l'axe de la voiture 
             lv_obj_align(line, LV_ALIGN_CENTER, pos_x_ligne,0);  // Pour que la ligne bouge 
@@ -151,12 +151,12 @@ int main() {
         /*Switch pour l'action de chaque position du joystick */
         switch(Direction) 
         {
-            case Gauche:
+            case Gauche: 
             pos_X_voiture -= 11;
             lv_obj_align(imgcar, LV_ALIGN_CENTER, -150, pos_X_voiture);
             if(pos_X_voiture <= -85)
                 {
-                    pos_X_voiture = -85;
+                    pos_X_voiture = -85;  // Bloque la position de la voiture pour l'empêcher de sortir
                 }
             Direction = 0;
             break;
@@ -166,7 +166,7 @@ int main() {
             lv_obj_align(imgcar, LV_ALIGN_CENTER, -150, pos_X_voiture);
             if(pos_X_voiture >= 60)
                 {
-                    pos_X_voiture = 60;
+                    pos_X_voiture = 60; // Bloque la position de la voiture pour l'empêcher de sortir
                 }
             Direction = 0;
             break;
@@ -191,7 +191,7 @@ int main() {
             
             if(pos_X_voiture <= -85)
                 {
-                    pos_X_voiture = -85;
+                    pos_X_voiture = -85; // Bloque la position de la voiture pour l'empêcher de sortir
                 }
             pos_x_arbre -= 14;  // On fait reculer l'arbre de 10
             pos_x_ligne -= 14;  // On fait reculer la ligne de 10
@@ -206,7 +206,7 @@ int main() {
             
             if(pos_X_voiture >= 60)
                 {
-                    pos_X_voiture = 60;
+                    pos_X_voiture = 60; // Bloque la position de la voiture pour l'empêcher de sortir
                 }
             pos_x_arbre -= 14;  // On fait reculer l'arbre de 10
             pos_x_ligne -= 14;  // On fait reculer la ligne de 10
